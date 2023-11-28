@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.signin;
+package edu.cnm.deepdive.graffiti;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

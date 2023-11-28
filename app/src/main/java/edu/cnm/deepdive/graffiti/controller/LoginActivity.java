@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.signin.controller;
+package edu.cnm.deepdive.graffiti.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.signin.R;
-import edu.cnm.deepdive.signin.databinding.ActivityLoginBinding;
-import edu.cnm.deepdive.signin.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.graffiti.R;
+import edu.cnm.deepdive.graffiti.databinding.ActivityLoginBinding;
+import edu.cnm.deepdive.graffiti.viewmodel.LoginViewModel;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {

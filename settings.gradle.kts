@@ -31,5 +31,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "google-sign-in-client"
+rootProject.name = "grafitti-client"
 include(":app")

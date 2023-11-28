@@ -1,6 +1,5 @@
-package edu.cnm.deepdive.signin.service;
+package edu.cnm.deepdive.graffiti.service;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,11 +9,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import dagger.hilt.android.qualifiers.ApplicationContext;
-import edu.cnm.deepdive.signin.R;
+import edu.cnm.deepdive.graffiti.R;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleEmitter;
