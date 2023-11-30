@@ -40,6 +40,7 @@ android {
             "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
         resValue("string", "app_name", project.property("appName") as String)
+        resValue("string", "service_base_url", getLocalProperty("serviceHost") + project.property("serviceBasePath") as String)
         resValue("string", "service_client_id", getLocalProperty("serviceClientId") ?: "")
 
     }
@@ -105,6 +106,12 @@ dependencies {
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.params)
     testRuntimeOnly(libs.junit.engine)
+
+    //Libraries for accessing HTTP resources
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.adapter.rx.java)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.logging.interceptor)
 
     // Libraries for instrumented (run in Android) testing.
     androidTestImplementation(libs.test.runner)

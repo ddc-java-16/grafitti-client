@@ -28,7 +28,7 @@ public class GoogleSignInService {
   private final GoogleSignInClient client;
 
   @Inject
-  GoogleSignInService(@ApplicationContext Context context) {
+  public GoogleSignInService(@ApplicationContext Context context) {
     Resources res = context.getResources();
     String clientId = res.getString(R.string.service_client_id);
     GoogleSignInOptions.Builder builder = new GoogleSignInOptions.Builder()

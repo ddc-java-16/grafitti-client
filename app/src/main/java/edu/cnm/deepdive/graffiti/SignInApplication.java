@@ -24,7 +24,7 @@ import dagger.hilt.android.HiltAndroidApp;
  * {@code AndroidManifest.xml}, or it will not be loaded and used by the Android system.
  */
 @HiltAndroidApp
-public class GrafittiApp extends Application {
+public class SignInApplication extends Application {
 
   @Override
   public void onCreate() {
