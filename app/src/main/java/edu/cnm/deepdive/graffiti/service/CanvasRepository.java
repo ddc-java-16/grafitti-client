@@ -20,14 +20,10 @@ public class CanvasRepository {
     this.grafittiProxy = grafittiProxy;
     this.signInService = signInService;
   }
-//  void post(String name) {
-//    grafittiProxy.postCanvas(signInService
-//        .refreshBearerToken().toString(), name);
-//  }
 
-  public Single<Canvas> add(String name){
+  public Single<Canvas> add(Canvas canvas){
     return signInService
         .refreshBearerToken()
-        .flatMap((token) -> grafittiProxy.postCanvas(name, token));
+        .flatMap((token) -> grafittiProxy.postCanvas(canvas, token));
   }
 }

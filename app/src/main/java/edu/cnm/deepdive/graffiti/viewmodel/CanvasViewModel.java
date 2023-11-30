@@ -5,6 +5,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.service.CanvasRepository;
 import javax.inject.Inject;
 
@@ -18,8 +19,8 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     this.canvasRepository = canvasRepository;
   }
 
-  public void add(String name) {
-    canvasRepository.add(name);
+  public void add(Canvas canvas) {
+    canvasRepository.add(canvas);
   }
 
 

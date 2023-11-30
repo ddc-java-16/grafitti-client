@@ -36,8 +36,8 @@ public final class ProxyModule {
         .addInterceptor(interceptor)
         .build();
     Retrofit retrofit = new Builder()
-        .baseUrl(context.getString(R.string.service_base_url)) // FIXME: 11/29/23
-        //.baseUrl(context.getString(R.string.service_base_url))
+        .baseUrl(context.getString(R.string.service_base_url))
+
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .client(client)
