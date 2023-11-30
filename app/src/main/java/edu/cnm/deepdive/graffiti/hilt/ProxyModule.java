@@ -9,7 +9,7 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import edu.cnm.deepdive.graffiti.R;
-import edu.cnm.deepdive.graffiti.service.GrafittiProxy;
+import edu.cnm.deepdive.graffiti.service.GraffitiProxy;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -25,7 +25,7 @@ public final class ProxyModule {
 
   @Provides
   @Singleton
-  GrafittiProxy provideProxy(@ApplicationContext Context context){
+  GraffitiProxy provideProxy(@ApplicationContext Context context){
     Gson gson = new GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
@@ -42,7 +42,7 @@ public final class ProxyModule {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .client(client)
         .build();
-    return retrofit.create(GrafittiProxy.class);
+    return retrofit.create(GraffitiProxy.class);
   }
 
 }

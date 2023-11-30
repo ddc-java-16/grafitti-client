@@ -1,5 +1,7 @@
 package edu.cnm.deepdive.graffiti.model;
 
+import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.time.Instant;
@@ -21,8 +23,7 @@ public class Point {
   private int y;
 
 
-  @Expose
-  private UUID canvasKey;
+
 
   public int getX() {
     return x;
@@ -40,11 +41,10 @@ public class Point {
     this.y = y;
   }
 
-  public UUID getCanvasKey() {
-    return canvasKey;
-  }
-
-  public void setCanvasKey(UUID canvasKey) {
-    this.canvasKey = canvasKey;
+  @SuppressLint("DefaultLocale")
+  @NonNull
+  @Override
+  public String toString() {
+    return String.format("%1$s[x=%2$d, y=%3$d]", getClass().getSimpleName(), x, y);
   }
 }

@@ -1,9 +1,8 @@
 package edu.cnm.deepdive.graffiti.service;
 
-import edu.cnm.deepdive.graffiti.hilt.ProxyModule;
 import edu.cnm.deepdive.graffiti.model.Canvas;
+import edu.cnm.deepdive.graffiti.model.Point;
 import io.reactivex.rxjava3.core.Single;
-import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -12,18 +11,30 @@ import javax.inject.Singleton;
 public class CanvasRepository {
 
 
-  private GrafittiProxy grafittiProxy;
+  private GraffitiProxy graffitiProxy;
   private GoogleSignInService signInService;
 
   @Inject
-  CanvasRepository(GrafittiProxy grafittiProxy, GoogleSignInService signInService) {
-    this.grafittiProxy = grafittiProxy;
+  CanvasRepository(GraffitiProxy graffitiProxy, GoogleSignInService signInService) {
+    this.graffitiProxy = graffitiProxy;
     this.signInService = signInService;
   }
 
   public Single<Canvas> add(Canvas canvas){
     return signInService
         .refreshBearerToken()
-        .flatMap((token) -> grafittiProxy.postCanvas(canvas, token));
+        .flatMap((token) -> graffitiProxy.postCanvas(canvas, token));
+  }
+
+  public Single<Point> add(Point point, Canvas canvas){
+    return signInService
+        .refreshBearerToken()
+        .flatMap((token) -> graffitiProxy.postPoint(point, canvas.getId(), token));
+  }
+
+  public Single<Canvas> get(Canvas canvas){
+    return signInService
+        .refreshBearerToken()
+        .flatMap((token) -> graffitiProxy.getCanvas(canvas.getId(), token));
   }
 }
