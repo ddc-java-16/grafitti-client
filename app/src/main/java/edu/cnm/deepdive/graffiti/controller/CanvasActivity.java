@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,7 +13,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
+import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
+import java.util.LinkedList;
+import java.util.List;
 
 @AndroidEntryPoint
 public class CanvasActivity extends AppCompatActivity {
@@ -21,25 +25,17 @@ public class CanvasActivity extends AppCompatActivity {
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
   private boolean canvasCreated;
+  private List<Point> points;
 
   private OnTouchListener listener = new OnTouchListener() {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-      Log.i("GameActivity", event.toString());
-//      Log.i("ACTION_DOWN",String.valueOf(event.getActionIndex()));
-      Log.i("ACTION_DOWN_X", String.valueOf(event.getX()));
-      Log.i("ACTION_DOWN_Y", String.valueOf(event.getY()));
-      //Log.i("ACTION_MOVE",String.valueOf(event.getActionMasked()));
       if (canvasCreated) {
-        Point point = new Point();
-        point.setX(Math.round(event.getX()));
-        point.setY(Math.round(event.getY()));
-        canvasViewModel.add(point);
+        handleMotionEvent(event);
       }
       return true;
     }
   };
-
 
   @Override
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -51,7 +47,6 @@ public class CanvasActivity extends AppCompatActivity {
     binding.canvas.setOnTouchListener(listener);
 
     binding.createCanvas.setOnClickListener(
-
         (v) -> {
           Canvas canvas = new Canvas();
           canvas.setName(String.valueOf(binding.canvasName.getText()));
@@ -67,6 +62,31 @@ public class CanvasActivity extends AppCompatActivity {
           binding.canvas.setPoints(canvas.getPoints());
           binding.canvas.invalidate();
         });
+  }
+
+  private void handleMotionEvent(MotionEvent event) {
+    switch (event.getAction()){
+      case MotionEvent.ACTION_DOWN -> {
+        points = new LinkedList<>();
+        points.add(getPoint(event));
+      }
+      case MotionEvent.ACTION_MOVE -> {
+        points.add(getPoint(event));
+      }
+      case MotionEvent.ACTION_UP -> {
+        points.add(getPoint(event));
+        Tag tag = new Tag();
+        canvasViewModel.add(tag);
+      }
+    }
+  }
+
+  @NonNull
+  private static Point getPoint(MotionEvent event) {
+    Point point = new Point();
+    point.setX(Math.round(event.getX()));
+    point.setY(Math.round(event.getY()));
+    return point;
   }
 
 }

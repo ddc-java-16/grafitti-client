@@ -2,6 +2,7 @@ package edu.cnm.deepdive.graffiti.service;
 
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
+import edu.cnm.deepdive.graffiti.model.Tag;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,6 +21,9 @@ public interface GraffitiProxy {
 
   @POST("canvases")
   Single<Canvas> postCanvas(@Body Canvas canvas, @Header("Authorization") String bearerToken);
+
+  @POST("canvases/{canvasId}/tags")
+  Single<Tag> postTag(@Body Tag tag, @Path("canvasId") String canvasId, @Header("Authorization") String bearerToken);
 
   @POST("canvases/{canvasId}/points")
   Single<Point> postPoint(@Body Point point,@Path("canvasId") String canvasId, @Header("Authorization") String bearerToken);

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
+import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.service.CanvasRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   private final MutableLiveData<Throwable> throwable;
   private final MutableLiveData<Canvas> canvas;
   private final MutableLiveData<Point> point;
+  private final MutableLiveData<Tag> tag;
 
   @Inject
   CanvasViewModel(@ApplicationContext Context context, CanvasRepository canvasRepository) {
@@ -30,20 +32,19 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     throwable = new MutableLiveData<>();
     canvas = new MutableLiveData<>();
     point = new MutableLiveData<>();
+    tag = new MutableLiveData<>();
   }
 
-//  @Inject
-//  public CanvasViewModel(@ApplicationContext Context context, CanvasRepository canvasRepository) {
-//    this.canvasRepository = canvasRepository;
-//
-//
-//  }
-
   public void add(Canvas canvas) {
-
     canvasRepository.add(canvas).subscribe(
         this.canvas::postValue,
      this::postThrowable, pending);
+  }
+
+  public void add(Tag tag) {
+    canvasRepository.add(tag, canvas.getValue()).subscribe(
+        this.tag::postValue,
+        this::postThrowable, pending);
   }
 
   public void add(Point point){
@@ -62,6 +63,10 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
 
   public LiveData<Canvas> getCanvas() {
     return canvas;
+  }
+
+  public LiveData<Tag> getTag() {
+    return tag;
   }
 
   private void postThrowable(Throwable throwable){

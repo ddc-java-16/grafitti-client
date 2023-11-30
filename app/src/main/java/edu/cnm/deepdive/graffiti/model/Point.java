@@ -9,21 +9,11 @@ import java.util.UUID;
 
 public class Point {
 
-
-//  @Expose(deserialize = true, serialize = false)
-//  @SerializedName(value = "id", alternate = {"key"})
-//  private Long id;
-//  @Expose
-//  private Instant created;
-
   @Expose
   private int x;
 
   @Expose
   private int y;
-
-
-
 
   public int getX() {
     return x;
