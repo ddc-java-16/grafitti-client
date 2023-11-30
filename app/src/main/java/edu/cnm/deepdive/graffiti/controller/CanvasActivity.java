@@ -51,7 +51,12 @@ public class CanvasActivity extends AppCompatActivity  {
     binding.canvas.setOnTouchListener(listener);
 
    binding.createCanvas.setOnClickListener(
-       (v) -> canvasViewModel.add(String.valueOf(binding.canvasName.getText()))
+
+       (v) -> {
+         Canvas canvas = new Canvas();
+         canvas.setCanvasName(String.valueOf(binding.canvasName.getText()));
+         canvasViewModel.add(canvas);
+       }
        );
   }
 

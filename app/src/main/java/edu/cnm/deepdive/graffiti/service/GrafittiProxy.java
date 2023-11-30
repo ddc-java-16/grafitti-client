@@ -23,7 +23,7 @@ public interface GrafittiProxy  {
 //  Completable postPoint(@Body Point point, @Header("Authorization") String bearerToken);
 
   @POST("/canvases")
-  Single<Canvas> postCanvas(@Body String name, @Header("Authorization") String bearerToken);
+  Single<Canvas> postCanvas(@Body Canvas canvas, @Header("Authorization") String bearerToken);
 
 //  @GET("/canvases/{canvasKey}")
 //  Single<Canvas> getCanvas(@Header("Authorization") String bearerToken, @Path("canvasKey") String canvasKey);
