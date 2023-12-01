@@ -8,6 +8,7 @@ import android.view.View.OnTouchListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
@@ -24,6 +25,7 @@ public class CanvasActivity extends AppCompatActivity {
 
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
+  private LoadCanvasFragment loadCanvasFragment;
   private boolean canvasCreated;
   private List<Point> points;
 
@@ -40,6 +42,8 @@ public class CanvasActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    loadCanvasFragment = new LoadCanvasFragment();
+    FragmentManager manager = getSupportFragmentManager();
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     binding = ActivityCanvasBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
@@ -53,13 +57,17 @@ public class CanvasActivity extends AppCompatActivity {
           canvasViewModel.add(canvas);
         }
     );
+
+    binding.selectCanvas.setOnClickListener(
+        (v) -> loadCanvasFragment.show(manager,"")
+    );
     binding.refreshCanvas.setOnClickListener((v) -> canvasViewModel.refresh());
     canvasViewModel
         .getCanvas()
         .observe(this, (canvas) -> {
           canvasCreated = true;
           // TODO: 11/30/23 Draw points on canvas.
-          binding.canvas.setPoints(canvas.getPoints());
+          binding.canvas.setCanvas(canvas);
           binding.canvas.invalidate();
         });
   }
@@ -76,6 +84,7 @@ public class CanvasActivity extends AppCompatActivity {
       case MotionEvent.ACTION_UP -> {
         points.add(getPoint(event));
         Tag tag = new Tag();
+        tag.getPoints().addAll(points);
         canvasViewModel.add(tag);
       }
     }

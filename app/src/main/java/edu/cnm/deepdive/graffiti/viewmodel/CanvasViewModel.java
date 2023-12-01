@@ -13,6 +13,7 @@ import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.service.CanvasRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import java.util.List;
 import javax.inject.Inject;
 
 @HiltViewModel
@@ -24,6 +25,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   private final MutableLiveData<Canvas> canvas;
   private final MutableLiveData<Point> point;
   private final MutableLiveData<Tag> tag;
+  private final MutableLiveData<List<Canvas>> canvases;
 
   @Inject
   CanvasViewModel(@ApplicationContext Context context, CanvasRepository canvasRepository) {
@@ -33,32 +35,49 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     canvas = new MutableLiveData<>();
     point = new MutableLiveData<>();
     tag = new MutableLiveData<>();
+    canvases = new MutableLiveData<>();
   }
 
   public void add(Canvas canvas) {
     canvasRepository.add(canvas).subscribe(
         this.canvas::postValue,
-     this::postThrowable, pending);
-  }
-
-  public void add(Tag tag) {
-    canvasRepository.add(tag, canvas.getValue()).subscribe(
-        this.tag::postValue,
         this::postThrowable, pending);
   }
 
-  public void add(Point point){
+  public void add(Tag tag) {
+    Canvas canvas = this.getCanvas().getValue();
+    canvasRepository.add(tag, canvas).subscribe(
+        (t) -> {
+          canvas.getTags().add(t);
+          this.canvas.postValue(canvas);
+        },
+        this::postThrowable, pending);
+  }
+
+  public void add(Point point) {
     canvasRepository.add(point, canvas.getValue())
         .subscribe(this.point::postValue, this::postThrowable, pending);
   }
 
-  public void refresh(){
+  public void fetchAll() {
+    canvasRepository.getAll().subscribe(canvases::postValue, this::postThrowable, pending);
+  }
+
+  public void fetch(Canvas canvas) {
+    canvasRepository.get(canvas).subscribe(this.canvas::postValue, this::postThrowable, pending);
+  }
+
+  public void refresh() {
     canvasRepository.get(canvas.getValue())
         .subscribe(canvas::postValue, this::postThrowable, pending);
   }
 
   public LiveData<Throwable> getThrowable() {
     return throwable;
+  }
+
+  public LiveData<List<Canvas>> getCanvases() {
+    return canvases;
   }
 
   public LiveData<Canvas> getCanvas() {
@@ -69,7 +88,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     return tag;
   }
 
-  private void postThrowable(Throwable throwable){
+  private void postThrowable(Throwable throwable) {
     Log.e(getClass().getSimpleName(), throwable.getMessage(), throwable);
     this.throwable.postValue(throwable);
   }

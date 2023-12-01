@@ -4,6 +4,7 @@ import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
 import io.reactivex.rxjava3.core.Single;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -43,5 +44,11 @@ public class CanvasRepository {
     return signInService
         .refreshBearerToken()
         .flatMap((token) -> graffitiProxy.getCanvas(canvas.getId(), token));
+  }
+
+  public Single<List<Canvas>> getAll(){
+    return  signInService
+        .refreshBearerToken()
+        .flatMap(graffitiProxy::getAllCanvas);
   }
 }
