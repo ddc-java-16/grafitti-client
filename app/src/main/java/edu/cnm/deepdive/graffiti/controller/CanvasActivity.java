@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.graffiti.controller;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -71,7 +72,6 @@ public class CanvasActivity extends AppCompatActivity {
           binding.canvas.invalidate();
         });
   }
-
   private void handleMotionEvent(MotionEvent event) {
     switch (event.getAction()){
       case MotionEvent.ACTION_DOWN -> {

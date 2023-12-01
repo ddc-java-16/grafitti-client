@@ -17,6 +17,9 @@ public class Tag {
   @Expose
   private final List<Point> points = new LinkedList<>();
 
+  @Expose
+  private int color;
+
   public String getId() {
     return id;
   }
@@ -27,6 +30,14 @@ public class Tag {
 
   public List<Point> getPoints() {
     return points;
+  }
+
+  public int getColor() {
+    return color;
+  }
+
+  public void setColor(int color) {
+    this.color = color;
   }
 
   @NonNull
