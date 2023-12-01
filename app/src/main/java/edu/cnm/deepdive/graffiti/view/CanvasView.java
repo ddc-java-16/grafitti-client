@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
+import javax.inject.Singleton;
 
 public class CanvasView extends View {
 

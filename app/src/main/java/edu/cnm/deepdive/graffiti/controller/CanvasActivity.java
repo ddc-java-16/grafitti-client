@@ -10,9 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
+import edu.cnm.deepdive.graffiti.R;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
+import edu.cnm.deepdive.graffiti.databinding.FragmentColorPickerBinding;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
@@ -27,6 +30,7 @@ public class CanvasActivity extends AppCompatActivity {
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
   private LoadCanvasFragment loadCanvasFragment;
+  private ColorPickerFragment colorPickerFragment;
   private boolean canvasCreated;
   private List<Point> points;
 
@@ -48,7 +52,6 @@ public class CanvasActivity extends AppCompatActivity {
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     binding = ActivityCanvasBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-
     binding.canvas.setOnTouchListener(listener);
 
     binding.createCanvas.setOnClickListener(
@@ -56,6 +59,7 @@ public class CanvasActivity extends AppCompatActivity {
           Canvas canvas = new Canvas();
           canvas.setName(String.valueOf(binding.canvasName.getText()));
           canvasViewModel.add(canvas);
+          canvasViewModel.setColor(Color.BLACK);
         }
     );
 
@@ -70,6 +74,18 @@ public class CanvasActivity extends AppCompatActivity {
           // TODO: 11/30/23 Draw points on canvas.
           binding.canvas.setCanvas(canvas);
           binding.canvas.invalidate();
+        });
+
+    binding.selectBrush.setOnClickListener((v)-> {
+      canvasViewModel.getColor().observe(this, (color) -> {
+        binding.canvas.setColor(color);
+        binding.canvas.invalidate();
+      });
+      if(savedInstanceState ==null) {
+        colorPickerFragment = new ColorPickerFragment();
+      }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
         });
   }
   private void handleMotionEvent(MotionEvent event) {

@@ -51,5 +51,18 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@id/create_canvas"/>
 
+  <Button
+    android:id="@+id/select_brush"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Select Brush"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toEndOf="@id/refresh_canvas"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/fragmentcontainerview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

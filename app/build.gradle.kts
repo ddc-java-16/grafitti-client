@@ -121,6 +121,9 @@ dependencies {
     androidTestImplementation(libs.junit.params)
     androidTestImplementation(libs.espresso.core)
 
+    //Library for Color Picker Widget
+   implementation("com.github.skydoves:colorpickerview:2.3.0")
+
     constraints {
         implementation(libs.kotlin.jdk7) {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")

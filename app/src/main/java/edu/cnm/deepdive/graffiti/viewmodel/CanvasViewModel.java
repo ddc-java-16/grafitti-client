@@ -41,6 +41,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     color = new MutableLiveData<>();
   }
 
+
   public void add(Canvas canvas) {
     canvasRepository.add(canvas).subscribe(
         this.canvas::postValue,
@@ -48,6 +49,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   }
 
   public void add(Tag tag) {
+    tag.setColor(color.getValue());
     Canvas canvas = this.getCanvas().getValue();
     canvasRepository.add(tag, canvas).subscribe(
         (t) -> {
