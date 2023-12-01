@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.graffiti.viewmodel;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LiveData;
@@ -26,6 +27,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   private final MutableLiveData<Point> point;
   private final MutableLiveData<Tag> tag;
   private final MutableLiveData<List<Canvas>> canvases;
+  private final MutableLiveData<Integer> color;
 
   @Inject
   CanvasViewModel(@ApplicationContext Context context, CanvasRepository canvasRepository) {
@@ -36,7 +38,9 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     point = new MutableLiveData<>();
     tag = new MutableLiveData<>();
     canvases = new MutableLiveData<>();
+    color = new MutableLiveData<>();
   }
+
 
   public void add(Canvas canvas) {
     canvasRepository.add(canvas).subscribe(
@@ -45,6 +49,7 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   }
 
   public void add(Tag tag) {
+    tag.setColor(color.getValue());
     Canvas canvas = this.getCanvas().getValue();
     canvasRepository.add(tag, canvas).subscribe(
         (t) -> {
@@ -72,6 +77,8 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
         .subscribe(canvas::postValue, this::postThrowable, pending);
   }
 
+
+
   public LiveData<Throwable> getThrowable() {
     return throwable;
   }
@@ -86,6 +93,14 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
 
   public LiveData<Tag> getTag() {
     return tag;
+  }
+
+  public void setColor(int color) {
+    this.color.postValue(color);
+  }
+
+  public LiveData<Integer> getColor(){
+    return color;
   }
 
   private void postThrowable(Throwable throwable) {

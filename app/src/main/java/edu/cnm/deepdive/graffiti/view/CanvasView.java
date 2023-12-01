@@ -10,17 +10,23 @@ import androidx.annotation.Nullable;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
+import javax.inject.Singleton;
 
 public class CanvasView extends View {
 
   private Canvas canvas;
+  private Point point;
   private Paint paint;
-
+  private int color;
 
   {
     paint = new Paint();
     paint.setColor(Color.BLACK);
     paint.setStrokeWidth(2);
+  }
+
+  public void setColor(int color) {
+    paint.setColor(color);
   }
 
   public CanvasView(Context context) {
@@ -53,6 +59,7 @@ public class CanvasView extends View {
         Point prev = null;
         for (Point point : tag.getPoints()) {
           if (prev != null) {
+            paint.setColor(tag.getColor());
             canvas.drawLine(prev.getX(), prev.getY(), point.getX(), point.getY(), paint);
           }
           prev = point;

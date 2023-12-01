@@ -1,6 +1,7 @@
 [versions]
 
 # Compiler and standard library versions
+colorpickerview = "2.3.0"
 java = "17"
 kotlin = "1.9.0"
 
@@ -39,6 +40,7 @@ espresso = "3.5.1"
 [libraries]
 
 # Kotlin standard library delegates
+colorpickerview = { module = "com.github.skydoves:colorpickerview", version.ref = "colorpickerview" }
 kotlin-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin" }
 kotlin-jdk8 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 
