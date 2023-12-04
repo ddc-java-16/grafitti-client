@@ -3,6 +3,7 @@ package edu.cnm.deepdive.graffiti.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -60,6 +61,8 @@ public class CanvasView extends View {
         for (Point point : tag.getPoints()) {
           if (prev != null) {
             paint.setColor(tag.getColor());
+            paint.setStyle(Style.FILL);
+            paint.setStrokeWidth(tag.getStroke());
             canvas.drawLine(prev.getX(), prev.getY(), point.getX(), point.getY(), paint);
           }
           prev = point;

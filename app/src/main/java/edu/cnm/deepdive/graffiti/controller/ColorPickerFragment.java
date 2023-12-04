@@ -29,8 +29,8 @@ public class ColorPickerFragment extends Fragment {
     super.onCreate(savedInstanceState);
     binding = FragmentColorPickerBinding.inflate(getLayoutInflater());
     binding.apply.setOnClickListener((v) -> {
+      viewModel.setStroke((int) binding.stroke.getValue());
       getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-
     });
 
     binding.colorpicker.setColorListener(new ColorListener() {

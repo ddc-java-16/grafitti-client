@@ -19,6 +19,30 @@
     app:preferenceName="MyColorPicker"
     app:debounceDuration="200"/>
 
+  <TextView
+    android:id="@+id/stroke_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Brush Stroke Width:"
+    app:layout_constraintTop_toBottomOf="@id/colorpicker"
+    app:layout_constraintBottom_toTopOf="@id/stroke"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+  <com.google.android.material.slider.Slider
+    android:id="@+id/stroke"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/stroke_text"
+    app:layout_constraintBottom_toTopOf="@id/apply"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:valueFrom="1"
+    android:valueTo="200"
+    android:stepSize="1"
+    android:theme="@style/Theme.MaterialComponents.DayNight"/>
+
+
   <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -20,6 +20,9 @@ public class Tag {
   @Expose
   private int color;
 
+  @Expose
+  private int stroke;
+
   public String getId() {
     return id;
   }
@@ -30,6 +33,14 @@ public class Tag {
 
   public List<Point> getPoints() {
     return points;
+  }
+
+  public int getStroke() {
+    return stroke;
+  }
+
+  public void setStroke(int stroke) {
+    this.stroke = stroke;
   }
 
   public int getColor() {
