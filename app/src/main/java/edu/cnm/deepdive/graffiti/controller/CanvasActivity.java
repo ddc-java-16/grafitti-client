@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.graffiti.R;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
-import edu.cnm.deepdive.graffiti.databinding.FragmentColorPickerBinding;
-import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
@@ -29,11 +27,11 @@ public class CanvasActivity extends AppCompatActivity {
 
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
-  private LoadCanvasFragment loadCanvasFragment;
   private ColorPickerFragment colorPickerFragment;
   private boolean canvasCreated;
   private List<Point> points;
   private Timer timer;
+  private FragmentTransaction transaction;
 
   private OnTouchListener listener = new OnTouchListener() {
     @Override
@@ -49,7 +47,6 @@ public class CanvasActivity extends AppCompatActivity {
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     timer = new Timer();
-    loadCanvasFragment = new LoadCanvasFragment();
     FragmentManager manager = getSupportFragmentManager();
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     binding = ActivityCanvasBinding.inflate(getLayoutInflater());
@@ -82,9 +79,10 @@ public class CanvasActivity extends AppCompatActivity {
       if (savedInstanceState == null) {
         colorPickerFragment = new ColorPickerFragment();
       }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
-        });
+      transaction = getSupportFragmentManager().beginTransaction();
+      transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
+
+    });
   }
 
 
