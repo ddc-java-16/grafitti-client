@@ -60,6 +60,7 @@ public class CanvasActivity extends AppCompatActivity {
           canvas.setName(String.valueOf(binding.canvasName.getText()));
           canvasViewModel.add(canvas);
           canvasViewModel.setColor(Color.BLACK);
+          canvasViewModel.setStyle(1);
         }
     );
 

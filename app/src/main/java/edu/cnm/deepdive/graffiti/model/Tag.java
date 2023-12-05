@@ -23,6 +23,9 @@ public class Tag {
   @Expose
   private int stroke;
 
+  @Expose
+  private int style;
+
   public String getId() {
     return id;
   }
@@ -33,6 +36,15 @@ public class Tag {
 
   public List<Point> getPoints() {
     return points;
+  }
+
+
+  public int getStyle() {
+    return style;
+  }
+
+  public void setStyle(int style) {
+    this.style = style;
   }
 
   public int getStroke() {
