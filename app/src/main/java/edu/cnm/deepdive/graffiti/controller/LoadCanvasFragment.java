@@ -1,6 +1,8 @@
 package edu.cnm.deepdive.graffiti.controller;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +53,7 @@ public class LoadCanvasFragment extends DialogFragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
+
     return getView();
   }
 
@@ -58,6 +61,7 @@ public class LoadCanvasFragment extends DialogFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
   }
+
 
 
 }

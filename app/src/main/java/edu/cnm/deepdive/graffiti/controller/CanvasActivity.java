@@ -1,8 +1,6 @@
 package edu.cnm.deepdive.graffiti.controller;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -15,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.graffiti.R;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
-import edu.cnm.deepdive.graffiti.databinding.FragmentColorPickerBinding;
-import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
@@ -31,11 +27,11 @@ public class CanvasActivity extends AppCompatActivity {
 
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
-  private LoadCanvasFragment loadCanvasFragment;
   private ColorPickerFragment colorPickerFragment;
   private boolean canvasCreated;
   private List<Point> points;
   private Timer timer;
+  private FragmentTransaction transaction;
 
   private OnTouchListener listener = new OnTouchListener() {
     @Override
@@ -51,37 +47,21 @@ public class CanvasActivity extends AppCompatActivity {
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     timer = new Timer();
-    loadCanvasFragment = new LoadCanvasFragment();
     FragmentManager manager = getSupportFragmentManager();
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     binding = ActivityCanvasBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     binding.canvas.setOnTouchListener(listener);
 
-    binding.createCanvas.setOnClickListener(
-        (v) -> {
-          Canvas canvas = new Canvas();
-          canvas.setName(String.valueOf(binding.canvasName.getText()));
-          canvasViewModel.add(canvas);
-          canvasViewModel.setColor(Color.BLACK);
-          canvasViewModel.setStyle(1);
-        }
-    );
-
-    binding.selectCanvas.setOnClickListener(
-        (v) -> loadCanvasFragment.show(manager,"")
-    );
-
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        binding.refreshCanvas.callOnClick();
+        canvasViewModel.refresh();
+//        binding.canvas.invalidate();
       }
-    }, 500, 500);
+    }, 2000, 2000);
 
-
-
-    binding.refreshCanvas.setOnClickListener((v) -> canvasViewModel.refresh());
+//    binding.refreshCanvas.setOnClickListener((View v) -> canvasViewModel.refresh());
     canvasViewModel
         .getCanvas()
         .observe(this, (canvas) -> {
@@ -90,21 +70,24 @@ public class CanvasActivity extends AppCompatActivity {
           binding.canvas.setCanvas(canvas);
           binding.canvas.invalidate();
         });
-
-    binding.selectBrush.setOnClickListener((v)-> {
+    canvasViewModel.fetch(getIntent().getStringExtra(StartActivity.CANVAS_ID_KEY));
+    binding.selectBrush.setOnClickListener((v) -> {
       canvasViewModel.getColor().observe(this, (color) -> {
         binding.canvas.setColor(color);
         binding.canvas.invalidate();
       });
-      if(savedInstanceState ==null) {
+      if (savedInstanceState == null) {
         colorPickerFragment = new ColorPickerFragment();
       }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
-        });
+      transaction = getSupportFragmentManager().beginTransaction();
+      transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
+
+    });
   }
+
+
   private void handleMotionEvent(MotionEvent event) {
-    switch (event.getAction()){
+    switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN -> {
         points = new LinkedList<>();
         points.add(getPoint(event));

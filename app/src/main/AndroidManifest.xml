@@ -18,7 +18,12 @@
       android:exported="false"
       android:name=".controller.MainActivity"/>
     <activity
-      android:exported="true"
+      android:exported="false"
+      android:name=".controller.StartActivity"
+      />
+    <activity
+      android:exported="false"
+      android:parentActivityName=".controller.StartActivity"
       android:name=".controller.CanvasActivity"/>
     <activity
       android:exported="true"

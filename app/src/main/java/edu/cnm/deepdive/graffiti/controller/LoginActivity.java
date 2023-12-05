@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
   private void handleAccount(GoogleSignInAccount account) {
     if (account != null) {
-      Intent intent = new Intent(this, CanvasActivity.class)
+      Intent intent = new Intent(this, StartActivity.class)
           .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
       //noinspection unchecked
       startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
