@@ -22,6 +22,8 @@ import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @AndroidEntryPoint
 public class CanvasActivity extends AppCompatActivity {
@@ -33,6 +35,7 @@ public class CanvasActivity extends AppCompatActivity {
   private ColorPickerFragment colorPickerFragment;
   private boolean canvasCreated;
   private List<Point> points;
+  private Timer timer;
 
   private OnTouchListener listener = new OnTouchListener() {
     @Override
@@ -47,6 +50,7 @@ public class CanvasActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    timer = new Timer();
     loadCanvasFragment = new LoadCanvasFragment();
     FragmentManager manager = getSupportFragmentManager();
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
@@ -67,6 +71,16 @@ public class CanvasActivity extends AppCompatActivity {
     binding.selectCanvas.setOnClickListener(
         (v) -> loadCanvasFragment.show(manager,"")
     );
+
+    timer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        binding.refreshCanvas.callOnClick();
+      }
+    }, 500, 500);
+
+
+
     binding.refreshCanvas.setOnClickListener((v) -> canvasViewModel.refresh());
     canvasViewModel
         .getCanvas()
