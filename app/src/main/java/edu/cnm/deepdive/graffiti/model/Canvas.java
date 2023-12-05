@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Canvas {
 
-
   @Expose
   private String name;
 
@@ -20,7 +19,6 @@ public class Canvas {
 
   @Expose(deserialize = true, serialize = false)
   private final List<Tag> tags = new LinkedList<>();
-
 
   public String getName() {
     return name;
