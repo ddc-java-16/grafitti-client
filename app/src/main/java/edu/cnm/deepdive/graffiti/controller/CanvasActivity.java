@@ -1,8 +1,6 @@
 package edu.cnm.deepdive.graffiti.controller;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -58,30 +56,15 @@ public class CanvasActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     binding.canvas.setOnTouchListener(listener);
 
-    binding.createCanvas.setOnClickListener(
-        (v) -> {
-          Canvas canvas = new Canvas();
-          canvas.setName(String.valueOf(binding.canvasName.getText()));
-          canvasViewModel.add(canvas);
-          canvasViewModel.setColor(Color.BLACK);
-          canvasViewModel.setStyle(1);
-        }
-    );
-
-    binding.selectCanvas.setOnClickListener(
-        (v) -> loadCanvasFragment.show(manager,"")
-    );
-
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        binding.refreshCanvas.callOnClick();
+        canvasViewModel.refresh();
+//        binding.canvas.invalidate();
       }
-    }, 500, 500);
+    }, 2000, 2000);
 
-
-
-    binding.refreshCanvas.setOnClickListener((v) -> canvasViewModel.refresh());
+//    binding.refreshCanvas.setOnClickListener((View v) -> canvasViewModel.refresh());
     canvasViewModel
         .getCanvas()
         .observe(this, (canvas) -> {
@@ -90,21 +73,23 @@ public class CanvasActivity extends AppCompatActivity {
           binding.canvas.setCanvas(canvas);
           binding.canvas.invalidate();
         });
-
-    binding.selectBrush.setOnClickListener((v)-> {
+    canvasViewModel.fetch(getIntent().getStringExtra(StartActivity.CANVAS_ID_KEY));
+    binding.selectBrush.setOnClickListener((v) -> {
       canvasViewModel.getColor().observe(this, (color) -> {
         binding.canvas.setColor(color);
         binding.canvas.invalidate();
       });
-      if(savedInstanceState ==null) {
+      if (savedInstanceState == null) {
         colorPickerFragment = new ColorPickerFragment();
       }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragmentcontainerview, ColorPickerFragment.class, null).commit();
         });
   }
+
+
   private void handleMotionEvent(MotionEvent event) {
-    switch (event.getAction()){
+    switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN -> {
         points = new LinkedList<>();
         points.add(getPoint(event));

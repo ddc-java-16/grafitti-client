@@ -41,14 +41,18 @@ public class CanvasRepository {
   }
 
   public Single<Canvas> get(Canvas canvas){
-    return signInService
-        .refreshBearerToken()
-        .flatMap((token) -> graffitiProxy.getCanvas(canvas.getId(), token));
+    return get(canvas.getId());
   }
 
   public Single<List<Canvas>> getAll(){
     return  signInService
         .refreshBearerToken()
         .flatMap(graffitiProxy::getAllCanvas);
+  }
+
+  public Single<Canvas> get(String canvasId){
+    return signInService
+        .refreshBearerToken()
+        .flatMap((token) -> graffitiProxy.getCanvas(canvasId, token));
   }
 }

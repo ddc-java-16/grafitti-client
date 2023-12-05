@@ -78,6 +78,10 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     canvasRepository.get(canvas).subscribe(this.canvas::postValue, this::postThrowable, pending);
   }
 
+  public void fetch(String canvasId) {
+    canvasRepository.get(canvasId).subscribe(this.canvas::postValue, this::postThrowable, pending);
+  }
+
   public void refresh() {
     canvasRepository.get(canvas.getValue())
         .subscribe(canvas::postValue, this::postThrowable, pending);
