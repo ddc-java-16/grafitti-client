@@ -40,9 +40,9 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     point = new MutableLiveData<>();
     tag = new MutableLiveData<>();
     canvases = new MutableLiveData<>();
-    color = new MutableLiveData<>();
-    stroke = new MutableLiveData<>();
-    style = new MutableLiveData<>();
+    color = new MutableLiveData<>(Color.BLACK);
+    stroke = new MutableLiveData<>(1);
+    style = new MutableLiveData<>(1);
   }
 
 

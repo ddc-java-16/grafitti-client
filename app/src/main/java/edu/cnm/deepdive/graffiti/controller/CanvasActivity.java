@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.graffiti.controller;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
