@@ -3,6 +3,8 @@ package edu.cnm.deepdive.graffiti.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Cap;
+import android.graphics.Paint.Join;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -10,7 +12,6 @@ import androidx.annotation.Nullable;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.model.Point;
 import edu.cnm.deepdive.graffiti.model.Tag;
-import javax.inject.Singleton;
 
 public class CanvasView extends View {
 
@@ -56,10 +57,21 @@ public class CanvasView extends View {
     super.onDraw(canvas);
     if (this.canvas != null) {
       for (Tag tag : this.canvas.getTags()) {
+        paint.setColor(tag.getColor());
+        paint.setStrokeWidth(tag.getStroke());
+        if(tag.getStyle() == 1){
+          paint.setStrokeCap(Cap.ROUND); //Cap.ROUND Join.ROUND -- Cap.SQUARE Join.ROUND -- Cap.BUTT Join.ROUND
+          paint.setStrokeJoin(Join.ROUND);
+        } else if (tag.getStyle() == 2) {
+          paint.setStrokeCap(Cap.SQUARE); //Cap.ROUND Join.ROUND -- Cap.SQUARE Join.ROUND -- Cap.BUTT Join.ROUND
+          paint.setStrokeJoin(Join.ROUND);
+        } else {
+          paint.setStrokeCap(Cap.BUTT); //Cap.ROUND Join.ROUND -- Cap.SQUARE Join.ROUND -- Cap.BUTT Join.ROUND
+          paint.setStrokeJoin(Join.ROUND);
+        }
         Point prev = null;
         for (Point point : tag.getPoints()) {
           if (prev != null) {
-            paint.setColor(tag.getColor());
             canvas.drawLine(prev.getX(), prev.getY(), point.getX(), point.getY(), paint);
           }
           prev = point;

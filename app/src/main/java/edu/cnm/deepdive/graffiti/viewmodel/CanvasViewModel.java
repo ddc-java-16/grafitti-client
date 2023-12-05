@@ -28,6 +28,8 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   private final MutableLiveData<Tag> tag;
   private final MutableLiveData<List<Canvas>> canvases;
   private final MutableLiveData<Integer> color;
+  private final MutableLiveData<Integer> stroke;
+  private final MutableLiveData<Integer> style;
 
   @Inject
   CanvasViewModel(@ApplicationContext Context context, CanvasRepository canvasRepository) {
@@ -39,6 +41,8 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     tag = new MutableLiveData<>();
     canvases = new MutableLiveData<>();
     color = new MutableLiveData<>();
+    stroke = new MutableLiveData<>();
+    style = new MutableLiveData<>();
   }
 
 
@@ -50,6 +54,8 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
 
   public void add(Tag tag) {
     tag.setColor(color.getValue());
+    tag.setStroke(stroke.getValue());
+    tag.setStyle(style.getValue());
     Canvas canvas = this.getCanvas().getValue();
     canvasRepository.add(tag, canvas).subscribe(
         (t) -> {
@@ -95,9 +101,13 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
     return tag;
   }
 
+  public void setStyle(int style){this.style.postValue(style);}
+
   public void setColor(int color) {
     this.color.postValue(color);
   }
+
+  public void setStroke(int stroke){this.stroke.postValue(stroke);}
 
   public LiveData<Integer> getColor(){
     return color;
