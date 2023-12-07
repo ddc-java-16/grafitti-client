@@ -38,11 +38,6 @@ public class EditCanvasFragment extends DialogFragment {
       canvas = new Canvas();
       canvas.setName(String.valueOf(binding.canvasname.getText()));
       canvasViewModel.add(canvas);
-      canvasViewModel.setColor(Color.BLACK);
-      canvasViewModel.setStyle(1);
-
-      dialog.dismiss();
-
     });
     return dialog;
   }

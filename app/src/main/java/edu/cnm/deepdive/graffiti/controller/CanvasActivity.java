@@ -1,10 +1,10 @@
 package edu.cnm.deepdive.graffiti.controller;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -14,9 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.graffiti.R;
 import edu.cnm.deepdive.graffiti.databinding.ActivityCanvasBinding;
 import edu.cnm.deepdive.graffiti.model.Point;
-import edu.cnm.deepdive.graffiti.model.Tag;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,21 +25,12 @@ public class CanvasActivity extends AppCompatActivity {
 
   private CanvasViewModel canvasViewModel;
   private ActivityCanvasBinding binding;
+  MediaPlayer mediaPlayer;
   private ColorPickerFragment colorPickerFragment;
   private boolean canvasCreated;
   private List<Point> points;
   private Timer timer;
   private FragmentTransaction transaction;
-
-  private OnTouchListener listener = new OnTouchListener() {
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-      if (canvasCreated) {
-        handleMotionEvent(event);
-      }
-      return true;
-    }
-  };
 
   @Override
   protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -51,7 +40,6 @@ public class CanvasActivity extends AppCompatActivity {
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     binding = ActivityCanvasBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-    binding.canvas.setOnTouchListener(listener);
 
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
@@ -60,22 +48,32 @@ public class CanvasActivity extends AppCompatActivity {
 //        binding.canvas.invalidate();
       }
     }, 2000, 2000);
-
-//    binding.refreshCanvas.setOnClickListener((View v) -> canvasViewModel.refresh());
+    binding.tagView.setTagConsumer((tag) -> canvasViewModel.add(tag));
     canvasViewModel
         .getCanvas()
         .observe(this, (canvas) -> {
           canvasCreated = true;
           // TODO: 11/30/23 Draw points on canvas.
-          binding.canvas.setCanvas(canvas);
-          binding.canvas.invalidate();
+          binding.canvasView.setCanvas(canvas);
+        });
+    canvasViewModel
+        .getColor()
+        .observe(this, (color) -> {
+      binding.tagView.setStrokeColor(color);
+    });
+    canvasViewModel
+        .getStroke()
+        .observe(this, (width) -> {
+          binding.tagView.setStrokeWidth(width);
+        });
+    canvasViewModel
+        .getStyle()
+        .observe(this, (style) -> {
+          binding.tagView.setStrokeStyle(style);
         });
     canvasViewModel.fetch(getIntent().getStringExtra(StartActivity.CANVAS_ID_KEY));
     binding.selectBrush.setOnClickListener((v) -> {
-      canvasViewModel.getColor().observe(this, (color) -> {
-        binding.canvas.setColor(color);
-        binding.canvas.invalidate();
-      });
+
       if (savedInstanceState == null) {
         colorPickerFragment = new ColorPickerFragment();
       }
@@ -85,31 +83,23 @@ public class CanvasActivity extends AppCompatActivity {
     });
   }
 
-
-  private void handleMotionEvent(MotionEvent event) {
-    switch (event.getAction()) {
-      case MotionEvent.ACTION_DOWN -> {
-        points = new LinkedList<>();
-        points.add(getPoint(event));
-      }
-      case MotionEvent.ACTION_MOVE -> {
-        points.add(getPoint(event));
-      }
-      case MotionEvent.ACTION_UP -> {
-        points.add(getPoint(event));
-        Tag tag = new Tag();
-        tag.getPoints().addAll(points);
-        canvasViewModel.add(tag);
-      }
+  @Override
+  protected void onDestroy() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
     }
+    timer.cancel(); // FIXME: 12/6/23
+    super.onDestroy();
   }
 
-  @NonNull
-  private static Point getPoint(MotionEvent event) {
-    Point point = new Point();
-    point.setX(Math.round(event.getX()));
-    point.setY(Math.round(event.getY()));
-    return point;
+  @Override
+  protected void onPause() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
+    }
+    super.onPause();
   }
 
 }

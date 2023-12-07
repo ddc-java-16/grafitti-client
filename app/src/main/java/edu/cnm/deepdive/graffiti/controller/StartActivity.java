@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.graffiti.controller;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
+import edu.cnm.deepdive.graffiti.R;
 import edu.cnm.deepdive.graffiti.databinding.ActivityStartBinding;
 import edu.cnm.deepdive.graffiti.model.Canvas;
 import edu.cnm.deepdive.graffiti.viewmodel.CanvasViewModel;
@@ -17,6 +19,7 @@ public class StartActivity extends AppCompatActivity {
 
   public static final String CANVAS_ID_KEY = "canvas_id";
   private CanvasViewModel canvasViewModel;
+  MediaPlayer mediaPlayer;
   private LoadCanvasFragment loadCanvasFragment;
   private EditCanvasFragment editCanvasFragment;
   private ActivityStartBinding binding;
@@ -24,6 +27,8 @@ public class StartActivity extends AppCompatActivity {
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    mediaPlayer = MediaPlayer.create(this, R.raw.start);
+    mediaPlayer.start();
     binding = ActivityStartBinding.inflate(getLayoutInflater());
     canvasViewModel = new ViewModelProvider(this).get(CanvasViewModel.class);
     setContentView(binding.getRoot());
@@ -54,5 +59,23 @@ public class StartActivity extends AppCompatActivity {
       intent.putExtra(CANVAS_ID_KEY, canvas.getId());
       startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
     }
+  }
+
+  @Override
+  protected void onDestroy() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
+    }
+    super.onDestroy();
+  }
+
+  @Override
+  protected void onPause() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
+    }
+    super.onPause();
   }
 }
