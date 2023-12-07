@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/cardview_light_background"
+  android:background="@drawable/img"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <com.skydoves.colorpickerview.ColorPickerView
@@ -27,6 +27,9 @@
     android:layout_height="wrap_content"
     app:layout_constraintVertical_chainStyle="packed"
     android:text="Brush Stroke Width:"
+    android:textColor="@color/text_color"
+    android:fontFamily="@font/surfingcapital"
+    android:textSize="25dp"
     app:layout_constraintTop_toBottomOf="@id/radio_grup"
     app:layout_constraintBottom_toTopOf="@id/stroke"
     app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +45,9 @@
     app:layout_constraintEnd_toEndOf="parent"
     android:valueFrom="1"
     android:valueTo="500"
-    android:stepSize="1"
+    app:trackColorActive="#4D2F2E2E"
+    app:trackColorInactive="#4D2F2E2E"
+    app:thumbColor="#4D2F2E2E"
     android:theme="@style/Theme.MaterialComponents.DayNight"/>
 
   <TextView
@@ -50,6 +55,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Style: "
+    android:textColor="@color/text_color"
+    android:fontFamily="@font/surfingcapital"
+    android:textSize="25dp"
     app:layout_constraintTop_toBottomOf="@id/colorpicker"
     app:layout_constraintEnd_toStartOf="@id/radio_grup"
     app:layout_constraintBottom_toTopOf="@id/stroke_text"/>
@@ -137,6 +145,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/apply"
     android:text="Apply"
+    android:textSize="30dp"
+    android:fontFamily="@font/surfingcapital"
     app:layout_constraintTop_toBottomOf="@id/colorpicker"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

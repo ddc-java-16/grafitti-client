@@ -22,5 +22,9 @@
     <item name="colorPrimaryDark">@color/primary_color_dark</item>
     <item name="colorAccent">@color/accent_color</item>
   </style>
+  <style name="CustomSliderStyle" parent="Widget.MaterialComponents.Slider">
+    <!-- Apply the rainbow track tint -->
+    <item name="trackTint">@drawable/rainbow_progress</item>
+  </style>
 
 </resources>

@@ -16,9 +16,8 @@ import edu.cnm.deepdive.graffiti.model.Tag;
 public class CanvasView extends View {
 
   private Canvas canvas;
-  private Point point;
   private Paint paint;
-  private int color;
+
 
   {
     paint = new Paint();
@@ -86,5 +85,6 @@ public class CanvasView extends View {
 
   public void setCanvas(Canvas canvas) {
     this.canvas = canvas;
+    invalidate();
   }
 }

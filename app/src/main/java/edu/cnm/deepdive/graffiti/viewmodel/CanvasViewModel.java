@@ -53,9 +53,6 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
   }
 
   public void add(Tag tag) {
-    tag.setColor(color.getValue());
-    tag.setStroke(stroke.getValue());
-    tag.setStyle(style.getValue());
     Canvas canvas = this.getCanvas().getValue();
     canvasRepository.add(tag, canvas).subscribe(
         (t) -> {
@@ -115,6 +112,14 @@ public class CanvasViewModel extends ViewModel implements DefaultLifecycleObserv
 
   public LiveData<Integer> getColor(){
     return color;
+  }
+
+  public LiveData<Integer> getStroke() {
+    return stroke;
+  }
+
+  public LiveData<Integer> getStyle() {
+    return style;
   }
 
   private void postThrowable(Throwable throwable) {
