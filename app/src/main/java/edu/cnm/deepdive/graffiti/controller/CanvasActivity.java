@@ -56,12 +56,24 @@ public class CanvasActivity extends AppCompatActivity {
           // TODO: 11/30/23 Draw points on canvas.
           binding.canvasView.setCanvas(canvas);
         });
+    canvasViewModel
+        .getColor()
+        .observe(this, (color) -> {
+      binding.tagView.setStrokeColor(color);
+    });
+    canvasViewModel
+        .getStroke()
+        .observe(this, (width) -> {
+          binding.tagView.setStrokeWidth(width);
+        });
+    canvasViewModel
+        .getStyle()
+        .observe(this, (style) -> {
+          binding.tagView.setStrokeStyle(style);
+        });
     canvasViewModel.fetch(getIntent().getStringExtra(StartActivity.CANVAS_ID_KEY));
     binding.selectBrush.setOnClickListener((v) -> {
-      canvasViewModel.getColor().observe(this, (color) -> {
-        binding.canvas.setColor(color);
-        binding.canvas.invalidate();
-      });
+
       if (savedInstanceState == null) {
         colorPickerFragment = new ColorPickerFragment();
       }
@@ -88,14 +100,6 @@ public class CanvasActivity extends AppCompatActivity {
       mediaPlayer = null;
     }
     super.onPause();
-  }
-
-  @NonNull
-  private static Point getPoint(MotionEvent event) {
-    Point point = new Point();
-    point.setX(Math.round(event.getX()));
-    point.setY(Math.round(event.getY()));
-    return point;
   }
 
 }
